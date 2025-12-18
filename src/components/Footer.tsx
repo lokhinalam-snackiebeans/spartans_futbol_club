@@ -18,7 +18,9 @@ export default function Footer() {
               <h3 className="font-bold text-lg mb-4">Connect With Us</h3>
               <div className="flex space-x-4">
                 <a 
-                  href="#" 
+                  href="https://www.facebook.com/TucsonPremierLeague/#" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors"
                   aria-label="Facebook"
                 >
@@ -27,7 +29,9 @@ export default function Footer() {
                   </svg>
                 </a>
                 <a 
-                  href="#" 
+                  href="/comingsoon" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors"
                   aria-label="Instagram"
                 >

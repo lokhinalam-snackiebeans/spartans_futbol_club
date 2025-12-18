@@ -37,7 +37,7 @@ export default function Programs() {
           {/* Competitive */}
           <div className="group">
             <div className="mb-6">
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-2 group-hover:text-gray-400 transition-colors">
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-2 transition-colors">
                 Competitive
               </h3>
               <p className="text-2xl font-bold text-gray-500">U13-U19</p>
@@ -50,7 +50,7 @@ export default function Programs() {
           {/* E64 National League */}
           <div className="group">
             <div className="mb-6">
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-2 group-hover:text-gray-400 transition-colors">
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-2 transition-colors">
                 E64 National<br />League
               </h3>
             </div>

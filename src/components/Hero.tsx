@@ -1,7 +1,11 @@
 import { Play } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-export default function Hero() {
+interface HeroProps {
+  onNavigate?: (page: string) => void;
+}
+
+export default function Hero({ onNavigate }: HeroProps) {
   const { elementRef: statsRef, isVisible: statsVisible } = useScrollReveal();
   const { elementRef: titleRef, isVisible: titleVisible } = useScrollReveal();
   const { elementRef: subtitleRef, isVisible: subtitleVisible } = useScrollReveal();
@@ -57,11 +61,17 @@ export default function Hero() {
                   {/* Buttons - Positioned right below the title */}
                   <div ref={buttonsRef} className={`mt-6 reveal ${buttonsVisible ? 'active' : ''}`}>
                     <div className="flex space-x-4">
-                      <button className="px-6 py-2 bg-black text-white text-sm rounded-full font-semibold hover:bg-gray-800 flex items-center space-x-1">
+                      <button
+                        className="px-6 py-2 bg-black text-white text-sm rounded-full font-semibold hover:bg-gray-800 flex items-center space-x-1"
+                        onClick={() => onNavigate?.('national-championship')}
+                      >
                         <span>Achievements</span>
                         <span className="text-xs">→</span>
                       </button>
-                      <button className="px-5 py-2 border border-gray-300 text-sm rounded-full font-semibold hover:bg-gray-50">
+                      <button
+                        className="px-5 py-2 border border-gray-300 text-sm rounded-full font-semibold hover:bg-gray-50"
+                        onClick={() => onNavigate?.('sponsor')}
+                      >
                         <span>Sponsor us</span>
                       </button>
                     </div>

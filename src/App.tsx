@@ -20,6 +20,8 @@ import Sponsor from './pages/Sponsor';
 import ContactUs from './pages/ContactUs';
 import Placements from './pages/Placements';
 import UsysE64 from './pages/UsysE64';
+import ComingSoon from './pages/ComingSoon';
+import YouthAcademyRegistration from './pages/YouthAcademyRegistration';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -48,10 +50,18 @@ export default function App() {
       setCurrentPage('placements');
     } else if (path === '/usys-e64') {
       setCurrentPage('usys-e64');
+    } else if (path === '/comingsoon') {
+      setCurrentPage('coming-soon');
+    } else if (path === '/youthacademy-registration') {
+      setCurrentPage('youth-academy-registration');
     } else {
       setCurrentPage('home');
     }
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   const handleNavigate = (page: string) => {
     const routes: { [key: string]: string } = {
@@ -66,6 +76,8 @@ export default function App() {
       'contact': '/contact',
       'placements': '/placements',
       'usys-e64': '/usys-e64',
+      'coming-soon': '/comingsoon',
+      'youth-academy-registration': '/youthacademy-registration',
       'home': '/'
     };
     
@@ -88,7 +100,7 @@ export default function App() {
       <Header onNavigate={handleNavigate} />
       {currentPage === 'home' ? (
         <>
-          <Hero />
+          <Hero onNavigate={handleNavigate} />
           <Leagues />
           <Programs />
           <Training />
@@ -148,6 +160,16 @@ export default function App() {
       ) : currentPage === 'usys-e64' ? (
         <>
           <UsysE64 />
+          <Footer />
+        </>
+      ) : currentPage === 'coming-soon' ? (
+        <>
+          <ComingSoon />
+          <Footer />
+        </>
+      ) : currentPage === 'youth-academy-registration' ? (
+        <>
+          <YouthAcademyRegistration />
           <Footer />
         </>
       ) : null}

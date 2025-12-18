@@ -3,10 +3,81 @@ import { useEffect, useState } from 'react';
 
 export default function ContactUs() {
   const [isMounted, setIsMounted] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    const endpoint = import.meta.env.VITE_GOOGLE_SHEETS_ENDPOINT as string | undefined;
+
+    const url = import.meta.env.DEV ? '/api/sheets' : endpoint;
+
+    const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+    if (!url) {
+      setSubmitError('Missing Google Sheets endpoint. Set VITE_GOOGLE_SHEETS_ENDPOINT in your environment.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      console.groupCollapsed(`[ContactUs] submit start (${requestId})`);
+      console.log('mode', import.meta.env.MODE);
+      console.log('dev', import.meta.env.DEV);
+      console.log('url', url);
+      if (!import.meta.env.DEV) {
+        console.log('endpoint', endpoint);
+      }
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          page: window.location.href,
+          createdAt: new Date().toISOString()
+        })
+      });
+
+      console.log('status', res.status, res.statusText);
+      console.log('response headers', {
+        'content-type': res.headers.get('content-type'),
+        location: res.headers.get('location'),
+      });
+
+      const responseText = await res.text().catch(() => '');
+      console.log('response body', responseText);
+
+      if (!res.ok) {
+        throw new Error(responseText || `Request failed (${res.status})`);
+      }
+
+      setSubmitSuccess(true);
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to submit form');
+    } finally {
+      console.groupEnd();
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white pt-24">
@@ -26,12 +97,14 @@ export default function ContactUs() {
         </motion.div>
 
         <div className="bg-white max-w-md mx-auto rounded-lg shadow-sm p-8">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
               <input 
                 type="text" 
                 id="name" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent" 
               />
             </div>
@@ -41,6 +114,8 @@ export default function ContactUs() {
                 type="email" 
                 id="email" 
                 required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent" 
               />
             </div>
@@ -49,14 +124,30 @@ export default function ContactUs() {
               <textarea 
                 id="message" 
                 rows={4} 
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
               ></textarea>
             </div>
+
+            {submitError && (
+              <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-3">
+                {submitError}
+              </div>
+            )}
+
+            {submitSuccess && (
+              <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-4 py-3">
+                Thanks! Your message was sent.
+              </div>
+            )}
+
             <button 
               type="submit" 
-              className="w-full py-3 px-6 bg-yellow-400 text-gray-900 rounded-lg font-semibold hover:bg-yellow-500 transition-colors"
+              disabled={isSubmitting}
+              className="w-full py-3 px-6 bg-yellow-400 text-gray-900 rounded-lg font-semibold hover:bg-yellow-500 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Send
+              {isSubmitting ? 'Sending…' : 'Send'}
             </button>
           </form>
           
@@ -70,9 +161,7 @@ export default function ContactUs() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Better yet, see us in person!
             </h2>
-            <p className="text-gray-700 mb-6">
-              Feel free to meet with us before or after training sessions
-            </p>
+            <p className="text-gray-600 mb-6 whitespace-nowrap">Feel free to meet with us before or after training sessions</p>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-yellow-600">Spartans Futbol Club</h3>
               <a 

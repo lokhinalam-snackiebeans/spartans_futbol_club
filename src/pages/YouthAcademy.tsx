@@ -59,7 +59,7 @@ export default function YouthAcademy() {
               <p className="font-semibold">Registration August 7th, Todd Harris Park. 9-12pm</p>
             </div>
 
-            <a href="#register" className="mt-6 inline-block px-8 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors">
+            <a href="/youthacademy-registration" className="mt-6 inline-block px-8 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors">
               Click to Register
             </a>
           </div>
@@ -131,7 +131,7 @@ export default function YouthAcademy() {
               <p className="text-gray-700">Director of Youth Academy</p>
               <a href="mailto:gmedina@fcspartans.org" className="text-blue-600 hover:underline">gmedina@fcspartans.org</a>
             </div>
-            <a 
+            {/* <a 
               href="#" 
               className="mt-8 inline-block px-8 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors text-lg"
               onClick={(e) => {
@@ -141,7 +141,7 @@ export default function YouthAcademy() {
               }}
             >
               Click to Register
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
